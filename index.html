@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>School Tracking</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container p-4" id="app">
+      <!-- Navbar -->
+      <ul class="nav nav-tabs" id="main-nav">
+        <li class="nav-item">
+          <a
+            id="navLinkCreateActivity"
+            class="nav-link active"
+            aria-current="page"
+            href="#"
+            >Crear Actividad</a
+          >
+        </li>
+        <li class="nav-item">
+          <a id="navLinkUpdateActivity" class="nav-link" href="#"
+            >Actualizar Actividad</a
+          >
+        </li>
+        <li class="nav-item">
+          <a id="navLinkCreateTask" class="nav-link" href="#"
+            >Crear Asignación</a
+          >
+        </li>
+        <li class="nav-item">
+          <a id="navLinkUpdateTask" class="nav-link" href="#"
+            >Actualizar Asignación</a
+          >
+        </li>
+        <li class="nav-item">
+          <a id="navLinkActivitiesList" class="nav-link" href="#">Actividades</a>
+        </li>
+        <li class="nav-item">
+          <a id="navLinkTasksList" class="nav-link" href="#">Asignaciones</a>
+        </li>
+      </ul>
+
+      <!-- Form -->
+      <div class="container" id="form-container"></div>
+    </div>
+
+    <style>
+      .list-group li:hover{
+        background-color: skyblue;
+      }
+    </style>
+
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+  </body>
+
+  <!-- Create Activity Template -->
+  <template id="createActivityTemplate">
+    <div class="container">
+      <!-- Create Activity Form -->
+      <h3 class="mt-5">Crear Una Nueva Actividad</h3>
+
+      <form class="row g-3 mt-4" id="create-activities-form">
+        <!-- Activity Date -->
+        <div class="col-md-6">
+          <label for="create-activity-date" class="form-label"
+            >Fecha de la Actividad</label
+          >
+          <input
+            type="date"
+            class="form-control"
+            id="create-activity-date"
+            required
+          />
+        </div>
+
+        <!--  materias -->
+        <div class="col-md-4">
+          <label for="create-activity-subjec" class="form-label">Materia</label>
+          <select id="create-activity-subject" class="form-select" required>
+            <option selected></option>
+            <option>Agropecuaria</option>
+            <option>Artistica</option>
+            <option>Ciencias Naturales</option>
+            <option>Civica</option>
+            <option>Consejeria</option>
+            <option>Educacion Fisica</option>
+            <option>Español</option>
+            <option>Familia</option>
+            <option>Geografia</option>
+            <option>Historia</option>
+            <option>Ingles</option>
+            <option>Matematicas</option>
+            <option>Mecanografia</option>
+            <option>Musica</option>
+            <option>Orientacion</option>
+            <option>Religion Moral y Valores</option>
+          </select>
+        </div>
+
+        <!-- Activity Name -->
+        <div class="col-md-6">
+          <label for="create-activity-name" class="form-label"
+            >Nombre de la Actividad</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="create-activity-name"
+            required
+          />
+        </div>
+
+        <!-- Activity Description -->
+        <div class="col-md-6">
+          <label for="create-activity-desc" class="form-label"
+            >Descripcion de la Actividad</label
+          >
+          <input type="text" class="form-control" id="create-activity-desc" />
+        </div>
+
+        <!--  activity type -->
+        <div class="col-md-4">
+          <label for="create-activity-type" class="form-label"
+            >Tipo De Actividad</label
+          >
+          <select id="create-activity-type" class="form-select" required>
+            <option selected></option>
+            <option>Actividad de la Lección</option>
+            <option>Apreciación</option>
+            <option>Formativa</option>
+            <option>Sumativa</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <!-- activity grade -->
+        <div class="col-md-4">
+          <label for="create-activity-grade" class="form-label"
+            >Nota Obtenida</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="create-activity-grade"
+            min="1"
+            max="5"
+            step="0.01"
+          />
+        </div>
+
+        <!-- create activity button -->
+        <div class="col-12">
+          <button
+            id="createActivityTemplateButton"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Crear Actividad
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!-- Update Activity Template -->
+  <template id="updateActivityTemplate">
+    <div class="container">
+      <!-- Udpate Activity Form -->
+      <h3 class="mt-5">Actualizar Una Nueva Actividad</h3>
+      <!-- search activity -->
+      <div>
+        <form action="" class="row g-3 mt-4">
+          <!-- search acivity id -->
+          <div class="col-md-6 d-flex align-items-center">
+            <label for="activity-id" class="w-50" class="form-label"
+              >ID de la Actividad:
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="activity-id"
+              class="w-25"
+              required
+            />
+          </div>
+
+          <!-- search activity task button -->
+          <div class="col-md-4">
+            <button
+              id="updateActivityTemplateSearchButton"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Buscar Actividad
+            </button>
+          </div>
+        </form>
+      </div>
+      <form class="row g-3 mt-4" id="update-activities-form">
+        <!-- Activity Date -->
+        <div class="col-md-6">
+          <label for="update-activity-date" class="form-label"
+            >Fecha de la Actividad</label
+          >
+          <input
+            type="date"
+            class="form-control"
+            id="update-activity-date"
+            required
+          />
+        </div>
+
+        <!--  materias -->
+        <div class="col-md-4">
+          <label for="update-activity-subject" class="form-label"
+            >Materia</label
+          >
+          <select id="update-activity-subject" class="form-select" required>
+            <option selected></option>
+            <option>Agropecuaria</option>
+            <option>Artistica</option>
+            <option>Ciencias Naturales</option>
+            <option>Civica</option>
+            <option>Consejeria</option>
+            <option>Educacion Fisica</option>
+            <option>Español</option>
+            <option>Familia</option>
+            <option>Geografia</option>
+            <option>Historia</option>
+            <option>Ingles</option>
+            <option>Matematicas</option>
+            <option>Mecanografia</option>
+            <option>Musica</option>
+            <option>Orientacion</option>
+            <option>Religion Moral y Valores</option>
+          </select>
+        </div>
+
+        <!-- Activity Name -->
+        <div class="col-md-6">
+          <label for="update-activity-name" class="form-label"
+            >Nombre de la Actividad</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="update-activity-name"
+            required
+          />
+        </div>
+
+        <!-- Activity Description -->
+        <div class="col-md-6">
+          <label for="update-activity-desc" class="form-label"
+            >Descripcion de la Actividad</label
+          >
+          <input type="text" class="form-control" id="update-activity-desc" />
+        </div>
+
+        <!--  activity type -->
+        <div class="col-md-4">
+          <label for="update-activity-type" class="form-label"
+            >Tipo De Actividad</label
+          >
+          <select id="update-activity-type" class="form-select" required>
+            <option selected></option>
+            <option>Actividad de la Lección</option>
+            <option>Apreciación</option>
+            <option>Formativa</option>
+            <option>Sumativa</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <!-- activity grade -->
+        <div class="col-md-4">
+          <label for="update-activity-grade" class="form-label"
+            >Nota Obtenida</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="update-activity-grade"
+            min="1"
+            max="5"
+            step="0.01"
+          />
+        </div>
+
+        <!-- create activity button -->
+        <div class="col-12">
+          <input id="udpateActivityID" type="number" hidden />
+          <button
+            id="updateActivityTemplateButton"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Actualizar Actividad
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!-- Create Task Template -->
+  <template id="createTasksTemplate">
+    <div class="container">
+      <!-- Create Task Form -->
+      <h3 class="mt-5">Crear Una Nueva Asignación</h3>
+      <form class="row g-3 mt-4" id="create-tasks-form">
+        <!-- Task Date -->
+        <div class="col-md-6">
+          <label for="create-task-date" class="form-label"
+            >Fecha de la Asignación</label
+          >
+          <input
+            type="date"
+            class="form-control"
+            id="create-task-date"
+            required
+          />
+        </div>
+
+        <!--  materias -->
+        <div class="col-md-4">
+          <label for="create-task-subject" class="form-label">Materia</label>
+          <select id="create-task-subject" class="form-select" required>
+            <option selected></option>
+            <option>Agropecuaria</option>
+            <option>Artistica</option>
+            <option>Ciencias Naturales</option>
+            <option>Civica</option>
+            <option>Consejeria</option>
+            <option>Educacion Fisica</option>
+            <option>Español</option>
+            <option>Familia</option>
+            <option>Geografia</option>
+            <option>Historia</option>
+            <option>Ingles</option>
+            <option>Matematicas</option>
+            <option>Mecanografia</option>
+            <option>Musica</option>
+            <option>Orientacion</option>
+            <option>Religion Moral y Valores</option>
+          </select>
+        </div>
+
+        <!-- Task Name -->
+        <div class="col-md-6">
+          <label for="create-task-name" class="form-label"
+            >Nombre de la Asignación</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="create-task-name"
+            required
+          />
+        </div>
+
+        <!-- Task Description -->
+        <div class="col-md-6">
+          <label for="create-task-desc" class="form-label"
+            >Descripcion de la Asignación</label
+          >
+          <input type="text" class="form-control" id="create-task-desc" />
+        </div>
+
+        <!--  task type -->
+        <div class="col-md-4">
+          <label for="create-task-type" class="form-label"
+            >Tipo De Asignación</label
+          >
+          <select id="create-task-type" class="form-select" required>
+            <option selected></option>
+            <option>Asignación de la Lección</option>
+            <option>Apreciación</option>            
+            <option>Formativa</option>
+            <option>Sumativa</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <!-- task grade -->
+        <div class="col-md-4">
+          <label for="create-task-grade" class="form-label"
+            >Nota Obtenida</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="create-task-grade"
+            min="1"
+            max="5"
+            step="0.01"
+          />
+        </div>
+
+        <!-- create task button -->
+        <div class="col-12">
+          <button
+            id="createTasksTemplateButton"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Crear Asignación
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!-- Update Task Template -->
+  <template id="updateTasksTemplate">
+    <div class="container">
+      <!-- Create Task Form -->
+      <h3 class="mt-5">Actualizar Una Asignación</h3>
+
+      <!-- search task -->
+      <div>
+        <form action="" class="row g-3 mt-4">
+          <!-- search task id -->
+          <div class="col-md-6 d-flex align-items-center">
+            <label for="task-id" class="w-50" class="form-label"
+              >ID de la Actividad:
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="task-id"
+              class="w-25"
+            />
+          </div>
+
+          <!-- search task task button -->
+          <div class="col-md-4">
+            <button
+              id="updateTasksTemplateSearchButton"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Buscar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <form class="row g-3 mt-4" id="update-tasks-form">
+        <!-- Task Date -->
+        <div class="col-md-6">
+          <label for="update-task-date" class="form-label"
+            >Fecha de la Asignación</label
+          >
+          <input
+            type="date"
+            class="form-control"
+            id="update-task-date"
+            required
+          />
+        </div>
+
+        <!--  materias -->
+        <div class="col-md-4">
+          <label for="update-task-subject" class="form-label">Materia</label>
+          <select id="update-task-subject" class="form-select" required>
+            <option selected></option>
+            <option>Agropecuaria</option>
+            <option>Artistica</option>
+            <option>Ciencias Naturales</option>
+            <option>Civica</option>
+            <option>Consejeria</option>
+            <option>Educacion Fisica</option>
+            <option>Español</option>
+            <option>Familia</option>
+            <option>Geografia</option>
+            <option>Historia</option>
+            <option>Ingles</option>
+            <option>Matematicas</option>
+            <option>Mecanografia</option>
+            <option>Musica</option>
+            <option>Orientacion</option>
+            <option>Religion Moral y Valores</option>
+          </select>
+        </div>
+
+        <!-- Task Name -->
+        <div class="col-md-6">
+          <label for="update-task-name" class="form-label"
+            >Nombre de la Asignación</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="update-task-name"
+            required
+          />
+        </div>
+
+        <!-- Task Description -->
+        <div class="col-md-6">
+          <label for="update-task-desc" class="form-label"
+            >Descripcion de la Asignación</label
+          >
+          <input type="text" class="form-control" id="update-task-desc" />
+        </div>
+
+        <!--  task type -->
+        <div class="col-md-4">
+          <label for="update-task-type" class="form-label"
+            >Tipo De Asignación</label
+          >
+          <select id="update-task-type" class="form-select" required>
+            <option selected></option>
+            <option>Asignación de la Lección</option>
+            <option>Apreciación</option>
+            <option>Formativa</option>
+            <option>Sumativa</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <!-- task grade -->
+        <div class="col-md-4">
+          <label for="update-task-grade" class="form-label"
+            >Nota Obtenida</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="update-task-grade"
+            min="1"
+            max="5"
+            step="0.01"
+          />
+        </div>
+
+        <!-- create task button -->
+        <div class="col-12">
+          <input id="udpateTaskID" type="number" hidden />
+          <button
+            id="updateTasksTemplateButton"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Actualizar Asignación
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!-- activities -->
+  <template id="activitiesListTasksTemplate">
+    <ul class="list-group mt-4" id="activitiesOrderedList">            
+    </ul>
+  </template>
+
+  <!-- tasks -->
+  <template id="tasksListTasksTemplate" >
+    <ul class="list-group mt-4" id="tasksOrderedList">      
+    </ul>
+  </template>
+</html>

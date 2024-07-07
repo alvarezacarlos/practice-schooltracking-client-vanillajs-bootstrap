@@ -1,0 +1,9 @@
+.opened-assignmet{
+  background-color:coral;
+  font-weight: 700;
+}
+
+.closed-assignmet{
+  background-color: lightgreen;
+  font-weight: 700;
+}
