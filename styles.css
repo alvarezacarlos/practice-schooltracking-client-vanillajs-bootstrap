@@ -7,3 +7,7 @@
   background-color: lightgreen;
   font-weight: 700;
 }
+
+.list-group li:hover{
+  background-color: skyblue;
+}
